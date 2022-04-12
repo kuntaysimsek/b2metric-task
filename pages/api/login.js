@@ -12,10 +12,8 @@ const handler = async (req, res) => {
       usersData.some((user) => user.email === email) &&
       usersData.some((user) => user.password === password)
     ) {
-      console.log("login");
       res.status(200).json({message: "success"});
     } else {
-      console.log("not login");
       res.status(401).json({error: "email yada pass uyusmadi"});
     }
   } catch (e) {

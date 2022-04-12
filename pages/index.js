@@ -12,7 +12,6 @@ export default function Home() {
     e.preventDefault();
     try {
       const response = await axios.post(`/api/login`, inputs);
-      console.log(response);
       router.push('/library')
     } catch (error) {
       setErorrMessage(true)
