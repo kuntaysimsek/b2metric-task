@@ -1,7 +1,6 @@
 import React from "react";
 import UseInput from "../hooks/useInput";
 import axios from "axios";
-// import { addUser } from "../lib/firebase";
 
 function register() {
   const [inputs, setInputs] = UseInput({
@@ -13,8 +12,7 @@ function register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await axios.post(`/api/register`, inputs);
-    console.log(response);
+    await axios.post(`/api/register`, inputs);
   };
 
   return (

@@ -1,13 +1,23 @@
 import useInput from "../hooks/useInput";
+import { useState } from "react";
+import { useRouter } from 'next/router'
+import axios from "axios";
 
 export default function Home() {
   const [inputs, setInputs] = useInput({ email: "", password: "" });
+  const [errorMessage, setErorrMessage] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(inputs);
-    e.target.reset();
-  }
+    try {
+      const response = await axios.post(`/api/login`, inputs);
+      console.log(response);
+      router.push('/library')
+    } catch (error) {
+      setErorrMessage(true)
+    }
+  };
 
   return (
     <>
@@ -53,6 +63,7 @@ export default function Home() {
               </button>
             </div>
           </form>
+          <div className="mt-2" >{errorMessage ? "Emailinizi yada şifrenizi yanlış girdiniz" : ""}</div>
         </div>
       </div>
     </>
