@@ -1,9 +1,23 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function library() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showAddBookModal, setShowAddBookModal] = useState(false);
+
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await axios.get("/api/getBooks");
+      console.log(res.data);
+      setBooks(res.data);
+      console.log(books);
+    }
+
+    fetchData();
+  }, []);
 
   function removeBook() {
     setShowDeleteModal(!showDeleteModal);
