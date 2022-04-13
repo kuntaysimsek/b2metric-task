@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import UseInput from "../hooks/useInput";
 
 function library() {
+  const [inputs, setInputs] = UseInput({
+    book: "",
+    author: "",
+    password: "",
+    role: "user",
+  });
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showAddBookModal, setShowAddBookModal] = useState(false);
@@ -27,9 +35,15 @@ function library() {
     setShowUpdateModal(!showUpdateModal);
   }
 
-  function addBook() {
+  const addBook = async (e) => {
+    e.preventDefault();
+    await axios.post(`/api/addBook`, {
+      bookName: inputs.book,
+      author: inputs.author,
+    });
+    console.log(inputs.book);
     setShowAddBookModal(!showAddBookModal);
-  }
+  };
 
   return (
     <div className="flex justify-center dark:bg-gray-800 dark:border-gray-700">
@@ -73,6 +87,8 @@ function library() {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="book name"
                       required
+                      value={inputs.book}
+                      onChange={setInputs}
                     />
                     <input
                       type="text"
@@ -81,6 +97,8 @@ function library() {
                       placeholder="author"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
+                      value={inputs.author}
+                      onChange={setInputs}
                     />
                     <button
                       type="submit"
