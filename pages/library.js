@@ -3,11 +3,15 @@ import axios from "axios";
 import UseInput from "../hooks/useInput";
 
 function library() {
+  const [editBookData, setEditBookData] = useState({
+    bookName: "",
+    author: "",
+  });
   const [inputs, setInputs] = UseInput({
     book: "",
     author: "",
-    password: "",
-    role: "user",
+    editedbook: "",
+    editedauthor: "",
   });
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -28,13 +32,27 @@ function library() {
   const removeBook = async (e) => {
     e.preventDefault();
     setShowDeleteModal(!showDeleteModal);
-    await axios.post(`/api/removeBook`, {bookName:e.target.parentElement.querySelector('p').textContent});
-    console.log(e.target.parentElement.querySelector('p').textContent);
-  }
+    await axios.post(`/api/removeBook`, {
+      bookName: e.target.parentElement.querySelector("p").textContent,
+    });
+  };
 
-  function editBook() {
+  const openEditBook = async (e) => {
     setShowEditModal(!showEditModal);
-  }
+    setEditBookData({
+      bookName: e.target.parentElement.querySelector("#book-name").textContent,
+      author: e.target.parentElement.querySelector("#author").textContent,
+    });
+  };
+
+  const editBook = async (e) => {
+    setShowEditModal(!showEditModal);
+    await axios.post(`/api/editBook`, {
+      bookName: editBookData.bookName,
+      editedBookName: inputs.editedbook,
+      editedAuthor: inputs.editedauthor,
+    });
+  };
 
   const addBook = async (e) => {
     e.preventDefault();
@@ -123,17 +141,23 @@ function library() {
               <li key={book.bookName} className="py-3 sm:py-4">
                 <div className="flex items-center space-x-4">
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                    <p
+                      id="book-name"
+                      className="text-sm font-medium text-gray-900 truncate dark:text-white"
+                    >
                       {book.bookName}
                     </p>
-                    <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                    <p
+                      id="author"
+                      className="text-sm text-gray-500 truncate dark:text-gray-400"
+                    >
                       {book.author}
                     </p>
                   </div>
                   <button
                     type="button"
                     className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    onClick={() => setShowEditModal(!showEditModal)}
+                    onClick={openEditBook}
                   >
                     Edit
                   </button>
@@ -167,19 +191,23 @@ function library() {
                             </h3>
                             <input
                               type="text"
-                              name="book"
-                              id="book"
+                              name="editedbook"
+                              id="editedbook"
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                              placeholder="book name"
+                              placeholder={editBookData.bookName}
                               required
+                              value={inputs.editedbook}
+                              onChange={setInputs}
                             />
                             <input
                               type="text"
-                              name="author"
-                              id="author"
-                              placeholder="author"
+                              name="editedauthor"
+                              id="editedauthor"
+                              placeholder={editBookData.author}
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                               required
+                              value={inputs.editedauthor}
+                              onChange={setInputs}
                             />
                             <button
                               type="submit"
