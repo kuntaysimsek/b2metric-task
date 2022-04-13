@@ -2,7 +2,6 @@ import db from "../../utils/db";
 
 const handler = async (req, res) => {
   try {
-    console.log(req.body);
     const { bookName } = req.body;
     const { editedBookName } = req.body;
     const { editedAuthor } = req.body;

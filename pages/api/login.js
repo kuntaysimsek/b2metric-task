@@ -12,7 +12,7 @@ const handler = async (req, res) => {
       usersData.some((user) => user.email === email) &&
       usersData.some((user) => user.password === password)
     ) {
-      res.status(200).json({message: "success"});
+      res.status(200).json({email: email, password: password});
     } else {
       res.status(401).json({error: "email yada pass uyusmadi"});
     }
