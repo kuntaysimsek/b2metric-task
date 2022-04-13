@@ -1,8 +1,11 @@
-import React from "react";
+import { useState } from "react";
 import UseInput from "../hooks/useInput";
 import axios from "axios";
+import { useRouter } from 'next/router'
 
 function register() {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const router = useRouter();
   const [inputs, setInputs] = UseInput({
     fullname: "",
     email: "",
@@ -10,9 +13,17 @@ function register() {
     role: "user"
   });
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [errorMessage, setErorrMessage] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post(`/api/register`, inputs);
+    try {
+      await axios.post(`/api/register`, inputs);
+      router.push('/')
+    } catch (error) {
+      setErorrMessage(true);
+    }
   };
 
   return (
@@ -71,6 +82,7 @@ function register() {
               </button>
             </div>
           </form>
+          <div className="mt-2" >{errorMessage ? "Bu email ile kayit mevcut" : ""}</div>
         </div>
       </div>
     </>

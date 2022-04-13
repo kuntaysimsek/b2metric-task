@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import UseInput from "../hooks/useInput";
+import Image from "next/image";
+
+import closeIcon from "../assets/images/close-icon.svg";
 
 function library() {
   const [editBookData, setEditBookData] = useState({
@@ -52,6 +55,8 @@ function library() {
       editedBookName: inputs.editedbook,
       editedAuthor: inputs.editedauthor,
     });
+    inputs.editedbook = "";
+    inputs.editedauthor = "";
   };
 
   const addBook = async (e) => {
@@ -62,6 +67,8 @@ function library() {
     });
     console.log(inputs.book);
     setShowAddBookModal(!showAddBookModal);
+    inputs.book = "";
+    inputs.author = "";
   };
 
   return (
@@ -69,7 +76,7 @@ function library() {
       <div className="p-4 lg:w-5/12 sm:w-8/12 w-full max-w-lg rounded-lg sm:p-8">
         <div className="flex justify-between items-center mb-4">
           <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
-            Latest Customers
+            Library
           </h5>
           <button
             href="#"
@@ -83,7 +90,7 @@ function library() {
               id="authentication-modal"
               className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center"
             >
-              <div className="relative p-4 w-full max-w-md h-full md:h-auto">
+              <div className="relative m-auto p-4 w-full max-w-md h-full md:h-auto">
                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                   <div className="flex justify-end p-2">
                     <button
@@ -92,7 +99,7 @@ function library() {
                       data-modal-toggle="authentication-modal"
                       onClick={() => setShowAddBookModal(!showAddBookModal)}
                     >
-                      a
+                      <Image alt="closeIcon" src={closeIcon} />
                     </button>
                   </div>
                   <form className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
@@ -173,7 +180,7 @@ function library() {
                       id="authentication-modal"
                       className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center"
                     >
-                      <div className="relative p-4 w-full max-w-md h-full md:h-auto">
+                      <div className="relative m-auto p-4 w-full max-w-md h-full md:h-auto">
                         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                           <div className="flex justify-end p-2">
                             <button
@@ -182,7 +189,7 @@ function library() {
                               data-modal-toggle="authentication-modal"
                               onClick={() => setShowEditModal(!showEditModal)}
                             >
-                              a
+                              <Image alt="closeIcon" src={closeIcon} />
                             </button>
                           </div>
                           <form className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">

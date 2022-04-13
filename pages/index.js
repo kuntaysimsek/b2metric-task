@@ -11,7 +11,7 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`/api/login`, inputs);
+      await axios.post(`/api/login`, inputs);
       router.push('/library')
     } catch (error) {
       setErorrMessage(true)
