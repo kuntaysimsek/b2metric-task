@@ -1,24 +1,17 @@
 import React from "react";
 import Link from "next/link";
 import axios from "axios";
+import UseUser from "../hooks/useUser"
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 function Header() {
-  const [userRole, setUserRole] = useState([]);
-
-  useEffect(() => {
-    async function postUser() {
-      try {
-        const token = JSON.parse(localStorage.getItem("token"));
-        const userRole = await axios.post("/api/getUser", token);
-        setUserRole(userRole.data);
-      } catch (error) {}
-    }
-    postUser();
-  }, []);
+  const [user, setUser] = UseUser();
+  const router = useRouter();
 
   const logout = () => {
     localStorage.clear();
+    router.push('/')
   };
 
   return (
@@ -30,12 +23,7 @@ function Header() {
       </div>
       <div className="flex-grow flex justify-end">
         <div className="text-sm flex-grow">
-          <Link href="/register">
-            <a className="block mt-4 inline-block mt-0 text-teal-200 hover:text-white mr-6">
-              Register
-            </a>
-          </Link>
-          {userRole == "admin" || userRole == "user" ? (
+          {user ? (
             <button
               onClick={logout}
               className="block mt-4 inline-block mt-0 text-teal-200 hover:text-white mr-6"
@@ -49,12 +37,6 @@ function Header() {
               </a>
             </Link>
           )}
-
-          <Link href="/library">
-            <a className="block mt-4 inline-block mt-0 text-teal-200 hover:text-white mr-6">
-              Library
-            </a>
-          </Link>
         </div>
       </div>
     </nav>

@@ -10,6 +10,7 @@ const handler = async (req, res) => {
       .get();
 
     book.forEach((doc) => {
+      console.log(doc.ref.id);
         doc.ref.delete();
     });
 

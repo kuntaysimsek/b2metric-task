@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import UseInput from "../hooks/useInput";
 import Image from "next/image";
+import UseUser from "../hooks/useUser"
 
 import closeIcon from "../assets/images/close-icon.svg";
 
-function library() {
+function Library() {
   const [editBookData, setEditBookData] = useState({
     bookName: "",
     author: "",
@@ -22,8 +23,7 @@ function library() {
   const [showAddBookModal, setShowAddBookModal] = useState(false);
 
   const [books, setBooks] = useState([]);
-  const [userRole, setUserRole] = useState([]);
-  const [auth, setAuth] = useState(true);
+  const [user, setUser] = UseUser();
 
   useEffect(() => {
     async function fetchData() {
@@ -31,18 +31,6 @@ function library() {
       setBooks(res.data);
     }
     fetchData();
-
-    const token = JSON.parse(localStorage.getItem("token"));
-
-    async function postUser() {
-      try {
-        const userRole = await axios.post("/api/getUser", token);
-        setUserRole(userRole.data);
-      } catch (error) {
-        setAuth(false);
-      }
-    }
-    postUser();
   }, []);
 
   const removeBook = async (e) => {
@@ -74,16 +62,17 @@ function library() {
 
   const addBook = async (e) => {
     e.preventDefault();
-    await axios.post(`/api/addBook`, {
+    const addBookResponse = await axios.post(`/api/addBook`, {
       bookName: inputs.book,
       author: inputs.author,
     });
+    setBooks([...books, addBookResponse.data]);
     setShowAddBookModal(!showAddBookModal);
     inputs.book = "";
     inputs.author = "";
   };
 
-  if (auth) {
+  if (user) {
     return (
       <div className="flex justify-center dark:bg-gray-800 dark:border-gray-700">
         <div className="p-4 lg:w-5/12 sm:w-8/12 w-full max-w-lg rounded-lg sm:p-8">
@@ -91,7 +80,7 @@ function library() {
             <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
               Library
             </h5>
-            {userRole == "admin" ? (
+            {user.role == "admin" ? (
               <button
                 href="#"
                 className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
@@ -161,7 +150,7 @@ function library() {
                   </div>
                 </div>
               </div>
-            ) : null}
+            ) : ''}
           </div>
           <div className="flow-root">
             <ul
@@ -185,7 +174,7 @@ function library() {
                         {book.author}
                       </p>
                     </div>
-                    {userRole == "admin" ? (
+                    {user.role == "admin" ? (
                       <>
                         <button
                           type="button"
@@ -277,4 +266,4 @@ function library() {
   return <div>Lutfen giris yapiniz.</div>;
 }
 
-export default library;
+export default Library;

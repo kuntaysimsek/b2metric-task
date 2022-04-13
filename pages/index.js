@@ -2,7 +2,7 @@ import useInput from "../hooks/useInput";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import useToken from '../hooks/useToken';
+import UseUser from '../hooks/useUser';
 
 
 export default function Home() {
@@ -11,13 +11,13 @@ export default function Home() {
 
   const router = useRouter();
 
-  const { token, setToken } = useToken();
+  const [user, setUser] = UseUser();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(`/api/login`, inputs);
-      setToken(res.data);
+      setUser(res.data);
       router.push("/library");
     } catch (error) {
       setErorrMessage(true);

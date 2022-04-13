@@ -1,10 +1,15 @@
-import Header from './Header';
+import { useRouter } from "next/router";
+import Header from "./Header";
 
-const Layout = ({ children }) => (
-  <>
-    <Header />
-    {children}
-  </>
-);
+const Layout = ({ children }) => {
+  const router = useRouter();
+
+  return (
+    <>
+      {router.pathname === "/library" && <Header />}
+      {children}
+    </>
+  );
+};
 
 export default Layout;
