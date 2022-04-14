@@ -263,7 +263,7 @@ function Library() {
     );
   }
 
-  return <div>Lutfen giris yapiniz.</div>;
+  return <div className="mt-6 text-center text-red-700">Lutfen giris yapiniz.</div>;
 }
 
 export default Library;

@@ -1,26 +1,25 @@
 import { useState } from "react";
 import UseInput from "../hooks/useInput";
 import axios from "axios";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
+import Link from "next/link";
 
-function register() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+function Register() {
   const router = useRouter();
   const [inputs, setInputs] = UseInput({
     fullname: "",
     email: "",
     password: "",
-    role: "user"
+    role: "user",
   });
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [errorMessage, setErorrMessage] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.post(`/api/register`, inputs);
-      router.push('/')
+      router.push("/");
     } catch (error) {
       setErorrMessage(true);
     }
@@ -75,18 +74,27 @@ function register() {
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="mb-4 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3"></span>
                 Register
               </button>
+              <div className="text-center">
+                <Link href="/">
+                  <a className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                    Do you have an account? Login
+                  </a>
+                </Link>
+              </div>
             </div>
           </form>
-          <div className="mt-2" >{errorMessage ? "Bu email ile kayit mevcut" : ""}</div>
+          <div className="mt-2 text-center text-red-700">
+            {errorMessage ? "Bu email ile kayit mevcut" : ""}
+          </div>
         </div>
       </div>
     </>
   );
 }
 
-export default register;
+export default Register;
