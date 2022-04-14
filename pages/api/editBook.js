@@ -12,13 +12,12 @@ const handler = async (req, res) => {
       .get();
 
     book.forEach((doc) => {
-        doc.ref.update({
-          bookName: editedBookName,
-          author: editedAuthor
-        });
+      doc.ref.update({
+        bookName: editedBookName,
+        author: editedAuthor,
+      });
+      res.status(200).json();
     });
-
-    res.status(200).json();
   } catch (e) {
     console.log(e.message);
     res.status(400).end();

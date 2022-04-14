@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import UseInput from "../hooks/useInput";
 import Image from "next/image";
-import UseUser from "../hooks/useUser"
+import UseUser from "../hooks/useUser";
 
 import closeIcon from "../assets/images/close-icon.svg";
 
@@ -39,7 +39,10 @@ function Library() {
     await axios.post(`/api/removeBook`, {
       bookName: e.target.parentElement.querySelector("p").textContent,
     });
+    e.target.parentElement.parentElement.remove()
   };
+
+  const [editedSelect, setEditedSelect] = useState();
 
   const openEditBook = async (e) => {
     setShowEditModal(!showEditModal);
@@ -47,6 +50,10 @@ function Library() {
       bookName: e.target.parentElement.querySelector("#book-name").textContent,
       author: e.target.parentElement.querySelector("#author").textContent,
     });
+    setEditedSelect({
+      bookName: e.target.parentElement.querySelector("#book-name"),
+      author: e.target.parentElement.querySelector("#author")
+    })
   };
 
   const editBook = async (e) => {
@@ -56,6 +63,8 @@ function Library() {
       editedBookName: inputs.editedbook,
       editedAuthor: inputs.editedauthor,
     });
+    editedSelect.bookName.innerHTML = inputs.editedbook;
+    editedSelect.author.innerHTML = inputs.editedauthor;
     inputs.editedbook = "";
     inputs.editedauthor = "";
   };
@@ -150,7 +159,9 @@ function Library() {
                   </div>
                 </div>
               </div>
-            ) : ''}
+            ) : (
+              ""
+            )}
           </div>
           <div className="flow-root">
             <ul
@@ -263,7 +274,9 @@ function Library() {
     );
   }
 
-  return <div className="mt-6 text-center text-red-700">Lutfen giris yapiniz.</div>;
+  return (
+    <div className="mt-6 text-center text-red-700">Lutfen giris yapiniz.</div>
+  );
 }
 
 export default Library;
