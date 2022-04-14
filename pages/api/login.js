@@ -12,7 +12,7 @@ const handler = async (req, res) => {
       .get();
 
     if (usersData.docs.length === 1) {
-      res.status(200).json(usersData.docs[0].data());
+      res.status(200).json({...usersData.docs[0].data(), id: usersData.docs[0].id});
     } else {
       res.status(401).json({ error: "email yada pass uyusmadi" });
     }
