@@ -1,8 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import axios from "axios";
 import UseUser from "../hooks/useUser"
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 function Header() {
